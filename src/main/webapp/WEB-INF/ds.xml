@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+    <!-- The datasource is bound into JNDI at this location. We reference 
+        this in META-INF/persistence.xml -->
+    <datasource jndi-name="java:jboss/datasources/jee6-angular-DS"
+        pool-name="jee6-angular" enabled="true" 
+        use-java-context="true">
+        <connection-url>jdbc:postgresql://localhost:5432/jeeangulardb</connection-url>
+        <driver>org.postgresql.Driver</driver>
+        <security>
+            <user-name>jeeangular</user-name>
+            <password>j334n6ul4r@2015</password>
+        </security>
+<!--         <connection-url>jdbc:h2:mem:jee6-angular;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1</connection-url> -->
+<!--         <driver>h2</driver> -->
+<!--         <security> -->
+<!--             <user-name>sa</user-name> -->
+<!--             <password>sa</password> -->
+<!--         </security> -->
+    </datasource>
+</datasources>
+ 

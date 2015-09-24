@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/body.xhtml">
+	<ui:param name="pageHeader" value="Members Form" />
+
+	<ui:define name="conteudo">
+		<f:view>
+			<f:metadata>
+				<f:viewParam name="id" value="#{memberFormController.id}" />
+			</f:metadata>
+			<h:form id="memberForm" styleClass="form-horizontal" prependId="false">
+				<h:inputHidden value="#{memberFormController.member.id}" />
+				<div class="form-group">
+					<label for="name" class="col-sm-2 control-label">Name</label>
+					<div class="col-sm-10">
+						<h:inputText id="name" styleClass="form-control" value="#{memberFormController.member.name}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="phoneNumber" class="col-sm-2 control-label">Phone Number</label>
+					<div class="col-sm-10">
+						<h:inputText id="phoneNumber" styleClass="form-control" value="#{memberFormController.member.phoneNumber}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<h:commandButton styleClass="btn btn-primary" action="#{memberFormController.save()}" value="Save" />
+						<h:link styleClass="btn btn-default" outcome="/members.jsf">Cancel</h:link>
+					</div>
+				</div>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>
+</html>
