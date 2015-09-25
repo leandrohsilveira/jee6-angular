@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/body.xhtml">
+	<ui:param name="pageHeader" value="Companys List" />
+
+	<ui:define name="conteudo">
+		<f:view>
+			<form id="searchCompanyForm" class="form-inline form-search" method="get" action="#{contextName}#{urlCompanysList}.jsf">
+				<h:link styleClass="btn btn-primary" outcome="#{urlCompanyForm}">New</h:link>
+				<div class="form-group">
+					<label for="searchCompany">Search</label>
+					<input type="text" id="searchCompany" name="search" class="form-control input-search" placeholder="Search Companys..." value="#{companysListController.search}" />
+				</div>
+				<input type="hidden" name="page" class="form-control" value="#{companysListController.page}" />
+				<button id="searchCompanyBtn" type="submit" class="btn btn-default">Search</button>
+				<button id="searchCompanyReset" type="submit" class="btn btn-default btn-reset-search">Reset</button>
+			</form>
+			<br />
+			<div class="table-responsive">
+				<f:metadata>
+					<f:viewParam name="page" value="#{companysListController.page}" />
+					<f:viewParam name="search" value="#{companysListController.search}" />
+				</f:metadata>
+				<h:dataTable styleClass="table table-striped" value="#{companysListController.companys}" var="company">
+					<h:column>
+						<f:facet name="header">Name</f:facet>
+							#{company.name}
+					</h:column>
+					<h:column headerClass="col-xs-1">
+						<h:link styleClass="btn btn-sm btn-default" outcome="#{urlCompanyForm}?id=#{company.id}">
+							<span class="glyphicon glyphicon-pencil" />
+						</h:link>
+					</h:column>
+				</h:dataTable>
+			</div>
+			<ul class="pagination pagination-sm">
+				<li class="#{companysListController.page == 1 ? 'disabled' : ''}">
+					<h:link outcome="#{urlCompanyList}?page=1&amp;search=#{companysListController.search}" disabled="#{companysListController.page == 1}">
+						<span class="glyphicon glyphicon-fast-backward" />
+					</h:link>
+				</li>
+				<li class="#{companysListController.page == 1 ? 'disabled' : ''}">
+					<h:link outcome="#{urlCompanyList}?page=#{companysListController.page - 1}&amp;search=#{companysListController.search}" disabled="#{companysListController.page == 1}">
+						<span class="glyphicon glyphicon-backward" />
+					</h:link>
+				</li>
+				<c:forEach begin="1" end="#{companysListController.pages}" step="1" varStatus="status">
+					<ui:fragment rendered="#{companysListController.page + 3 ge status.index and companysListController.page - 3 le status.index}">
+						<li class="#{status.index == companysListController.page ? 'active' : ''}">
+							<h:link outcome="#{urlCompanyList}?page=#{status.index}&amp;search=#{companysListController.search}" value="#{status.index}" />
+						</li>
+					</ui:fragment>
+				</c:forEach>
+				<li class="#{companysListController.page == companysListController.pages ? 'disabled' : ''}">
+					<h:link outcome="#{urlCompanyList}?page=#{companysListController.page + 1}&amp;search=#{companysListController.search}" disabled="#{companysListController.page == companysListController.pages}">
+						<span class="glyphicon glyphicon-forward" />
+					</h:link>
+				</li>
+				<li class="#{companysListController.page == companysListController.pages ? 'disabled' : ''}">
+					<h:link outcome="#{urlCompanyList}?page=#{companysListController.pages}&amp;search=#{companysListController.search}" disabled="#{companysListController.page == companysListController.pages}">
+						<span class="glyphicon glyphicon-fast-forward" />
+					</h:link>
+				</li>
+			</ul>
+		</f:view>
+	</ui:define>
+</ui:composition>
+</html>

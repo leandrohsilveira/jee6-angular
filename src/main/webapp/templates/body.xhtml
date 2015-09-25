@@ -12,9 +12,9 @@
 	<meta name="author" content="" />
 	<title>Angular, Bootstrap and JEE6 Example</title>
 	<!-- Bootstrap core CSS -->
-	<link href="libs/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="#{libsPath}/css/bootstrap.min.css" rel="stylesheet" />
 	<!-- Custom styles for this template -->
-	<link href="assets/css/index.css" rel="stylesheet" />
+	<link href="#{assetsPath}/css/index.css" rel="stylesheet" />
 </h:head>
 <h:body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -26,17 +26,23 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Projects Members</a>
+				<a class="navbar-brand" href="#">Company Manager</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<h:link outcome="/members.jsf">Home</h:link>
+						<a href="#{contextName}/index.html">Home</a>
 					</li>
 					<li>
-						<h:link outcome="/members.jsf">Members</h:link>
+						<h:link outcome="#{urlMembersList}">Members</h:link>
+					</li>
+					<li>
+						<h:link outcome="#{urlCompanysList}">Companys</h:link>
 					</li>
 				</ul>
+				<form class="navbar-form navbar-right" method="get" action="#{contextName}#{urlSearchResults}.jsf">
+					<input type="text" name="search" class="form-control" placeholder="Search anything..." />
+				</form>
 			</div>
 		</div>
 	</nav>
@@ -47,8 +53,8 @@
 		</div>
 	</div>
 
-	<script src="libs/js/jquery.min.js"></script>
-	<script src="libs/js/bootstrap.min.js"></script>
+	<script src="#{libsPath}/js/jquery.min.js"></script>
+	<script src="#{libsPath}/js/bootstrap.min.js"></script>
 	<ui:insert name="javascript" />
 </h:body>
 </html>

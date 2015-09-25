@@ -16,8 +16,12 @@
  */
 package br.com.lhs.jee6angular.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
@@ -32,34 +36,47 @@ import br.com.lhs.jee6angular.commons.Constants;
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "member_seq", initialValue = 1, allocationSize = 1)
 public class Member extends Model {
 
-	/** Default value included to remove warning. Remove or modify at will. **/
-	private static final long serialVersionUID = 1L;
+    /** Default value included to remove warning. Remove or modify at will. **/
+    private static final long serialVersionUID = 1L;
 
-	@NotNull
-	@Size(min = 1, max = 25, message = "1-25 letters and spaces")
-	@Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
-	@Column(name = "full_name")
-	private String name;
+    @NotNull
+    @Size(min = 1, max = 25, message = "1-25 letters and spaces")
+    @Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
+    @Column(name = "full_name")
+    private String name;
 
-	@NotNull
-	@Size(min = 10, max = 12, message = "10-12 Numbers")
-	@Digits(fraction = 0, integer = 12, message = "Not valid")
-	@Column(name = "phone_number")
-	private String phoneNumber;
+    @NotNull
+    @Size(min = 10, max = 12, message = "10-12 Numbers")
+    @Digits(fraction = 0, integer = 12, message = "Not valid")
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE,
+	    CascadeType.PERSIST })
+    @JoinColumn(name = "company_id")
+    private Company company;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+	return name;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public void setName(String name) {
+	this.name = name;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public String getPhoneNumber() {
+	return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+	this.phoneNumber = phoneNumber;
+    }
+
+    public Company getCompany() {
+	return company;
+    }
+
+    public void setCompany(Company company) {
+	this.company = company;
+    }
 }

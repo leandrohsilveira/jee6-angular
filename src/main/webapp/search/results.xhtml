@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/body.xhtml">
+	<ui:param name="pageHeader" value="Search Results" />
+
+	<ui:define name="conteudo">
+		<f:view>
+			<div class="table-responsive">
+				<f:metadata>
+					<f:viewParam name="search" value="#{searchController.search}" />
+				</f:metadata>
+				<h:dataTable styleClass="table table-striped" value="#{searchController.results}" var="result">
+					<h:column>
+						<f:facet name="header">Result</f:facet>
+						<ui:fragment rendered="#{modelsController.isInstanceOfMember(result)}">
+							<span class="glyphicon glyphicon-user" /> Member
+							<div>
+								<strong>Name: #{modelsController.getAsMember(result).name}</strong>
+								<br />
+								Phone Number: #{modelsController.getAsMember(result).phoneNumber}
+							</div>
+						</ui:fragment>
+						<ui:fragment rendered="#{modelsController.isInstanceOfCompany(result)}">
+							<span class="glyphicon glyphicon-calendar" /> Company
+							<div>
+								<strong>Name: #{modelsController.getAsCompany(result).name}</strong>
+							</div>
+						</ui:fragment>
+					</h:column>
+					<h:column headerClass="col-xs-1">
+						<ui:fragment rendered="#{modelsController.isInstanceOfMember(result)}">
+							<h:link styleClass="btn btn-sm btn-default" outcome="#{urlMemberForm}?id=#{result.id}">
+								<span class="glyphicon glyphicon-pencil" />
+							</h:link>
+						</ui:fragment>
+						<ui:fragment rendered="#{modelsController.isInstanceOfCompany(result)}">
+							<h:link styleClass="btn btn-sm btn-default" outcome="#{urlCompanyForm}?id=#{result.id}">
+								<span class="glyphicon glyphicon-pencil" />
+							</h:link>
+						</ui:fragment>
+					</h:column>
+
+
+				</h:dataTable>
+			</div>
+		</f:view>
+	</ui:define>
+
+	<ui:define name="javascript">
+		<script type="text/javascript">
+			(function($) {
+				$(function() {
+					var $form = $('#searchCompanyForm');
+					$form.on('click', '#searchCompanyBtn', function(e) {
+						e.preventDefault();
+						document.location.search = 'page=1&amp;search='+$('#searchCompany').val();
+					});
+					$form.on('click', '#searchCompanyReset', function(click) {
+						document.querySelector('#searchCompany').value="";				
+					});
+				});
+			}(jQuery));
+		</script>
+	</ui:define>
+</ui:composition>
+</html>
