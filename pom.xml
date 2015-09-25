@@ -139,6 +139,7 @@
 				<configuration>
 					<warName>${project.artifactId}</warName>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<webappDirectory>${project.build.directory}/dist/${project.build.finalName}</webappDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
