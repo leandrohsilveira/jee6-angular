@@ -18,11 +18,4 @@
 			<renderer-type>javax.faces.lhs.ItemMenuAppRenderer</renderer-type>
 		</component>
 	</tag>
-	<tag>
-		<tag-name>button</tag-name>
-		<component>
-			<component-type>ButtonComponentType</component-type>
-			<renderer-type>javax.faces.lhs.ButtonRenderer</renderer-type>
-		</component>
-	</tag>
 </facelet-taglib>
