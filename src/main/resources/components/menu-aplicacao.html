@@ -1,0 +1,25 @@
+<div class="container-fluid">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#@{id}_collapse" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only">Toggle navigation</span>
+				
+		</button>
+		<a class="navbar-brand" href="#">Company Manager</a>
+	</div>
+	<div id="@{id}_collapse" class="navbar-collapse collapse">
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<a href="@{contextName}/index.html">Home</a>
+			</li>
+			<li>
+				<a href="@{contextName}/members/members-list.jsf">Members</a>
+			</li>
+			<li>
+				<a href="@{contextName}/companys/companys-list.jsf">Companys</a>
+			</li>
+		</ul>
+		<form class="navbar-form navbar-right" method="get" action="@{contextName}/search/results.jsf">
+			<input type="text" name="search" class="form-control" placeholder="Search anything..." />
+		</form>
+	</div>
+</div>

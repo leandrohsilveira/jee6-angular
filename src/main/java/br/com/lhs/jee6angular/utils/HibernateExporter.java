@@ -57,25 +57,20 @@ public class HibernateExporter implements Serializable {
 
 	@Produces
 	public HibernateExporter producesHibernateExporter() {
-		return new HibernateExporter(HibernateExporter.DEFAULT_DIALECT,
-				HibernateExporter.DEFAULT_MODEL_PACKAGE);
+		return new HibernateExporter(HibernateExporter.DEFAULT_DIALECT, HibernateExporter.DEFAULT_MODEL_PACKAGE);
 	}
 
-	public void export(OutputStream out, boolean generateCreateQueries,
-			boolean generateDropQueries) {
+	public void export(OutputStream out, boolean generateCreateQueries, boolean generateDropQueries) {
 
-		Dialect hibDialect = Dialect.getDialect(hibernateConfiguration
-				.getProperties());
+		Dialect hibDialect = Dialect.getDialect(hibernateConfiguration.getProperties());
 		try (PrintWriter writer = new PrintWriter(out)) {
 
 			if (generateCreateQueries) {
-				String[] createSQL = hibernateConfiguration
-						.generateSchemaCreationScript(hibDialect);
+				String[] createSQL = hibernateConfiguration.generateSchemaCreationScript(hibDialect);
 				write(writer, createSQL, FormatStyle.DDL.getFormatter());
 			}
 			if (generateDropQueries) {
-				String[] dropSQL = hibernateConfiguration
-						.generateDropSchemaScript(hibDialect);
+				String[] dropSQL = hibernateConfiguration.generateDropSchemaScript(hibDialect);
 				write(writer, dropSQL, FormatStyle.DDL.getFormatter());
 			}
 		}
@@ -83,8 +78,7 @@ public class HibernateExporter implements Serializable {
 
 	public void export(File exportFile) throws FileNotFoundException {
 
-		export(new FileOutputStream(exportFile), generateCreateQueries,
-				generateDropQueries);
+		export(new FileOutputStream(exportFile), generateCreateQueries, generateDropQueries);
 	}
 
 	public void exportToConsole() {
@@ -103,8 +97,7 @@ public class HibernateExporter implements Serializable {
 		hibernateConfiguration = new Configuration();
 
 		final Reflections reflections = new Reflections(entityPackage);
-		for (Class<?> cl : reflections
-				.getTypesAnnotatedWith(MappedSuperclass.class)) {
+		for (Class<?> cl : reflections.getTypesAnnotatedWith(MappedSuperclass.class)) {
 			hibernateConfiguration.addAnnotatedClass(cl);
 			HibernateExporter.log.info("Mapped = " + cl.getName());
 		}

@@ -3,6 +3,7 @@ package br.com.lhs.jee6angular.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import br.com.lhs.jee6angular.dao.util.query.QueryExpression;
 import br.com.lhs.jee6angular.model.Model;
 
 public interface DAO<T extends Model> extends Serializable {
@@ -23,8 +24,8 @@ public interface DAO<T extends Model> extends Serializable {
 
 	Long count();
 
-	List<T> find(String search, Integer firstResult, Integer maxResults);
+	List<T> find(QueryExpression queryExpression, Integer firstResult, Integer maxResults);
 
-	Long count(String search);
+	Long count(QueryExpression queryExpression);
 
 }

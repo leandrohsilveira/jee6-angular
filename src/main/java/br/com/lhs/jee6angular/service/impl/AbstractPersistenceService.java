@@ -2,12 +2,13 @@ package br.com.lhs.jee6angular.service.impl;
 
 import java.util.List;
 
+import br.com.lhs.jee6angular.dao.util.query.impl.LikeQueryParam;
+import br.com.lhs.jee6angular.dao.util.query.impl.LikeQueryParam.LikeType;
 import br.com.lhs.jee6angular.model.Model;
 import br.com.lhs.jee6angular.service.PersistenceService;
+import br.com.lhs.jee6angular.service.util.ResultContent;
 
-public abstract class AbstractPersistenceService<T extends Model>
-		implements
-			PersistenceService<T> {
+public abstract class AbstractPersistenceService<T extends Model> implements PersistenceService<T> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,12 +43,19 @@ public abstract class AbstractPersistenceService<T extends Model>
 
 	@Override
 	public List<T> find(String search, Integer firstResult, Integer maxResults) {
-		return getModelDAO().find(search, firstResult, maxResults);
+		return getModelDAO().find(new LikeQueryParam("query", search, LikeType.CONTEM), firstResult, maxResults);
 	}
 
 	@Override
 	public Long count(String search) {
-		return getModelDAO().count(search);
+		return getModelDAO().count(new LikeQueryParam("query", search, LikeType.CONTEM));
+	}
+
+	@Override
+	public ResultContent<T> search(String search, Integer firstResult, Integer maxResults) {
+		Long countResult = count(search);
+		List<T> findResult = find(search, firstResult, maxResults);
+		return new ResultContent<>(findResult, countResult);
 	}
 
 }

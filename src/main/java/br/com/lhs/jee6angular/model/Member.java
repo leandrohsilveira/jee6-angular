@@ -34,49 +34,48 @@ import br.com.lhs.jee6angular.commons.Constants;
 @Entity
 @Table(name = "member")
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "member_seq", initialValue = 1, allocationSize = 1)
-public class Member extends Model {
+public class Member extends Searchable {
 
-    /** Default value included to remove warning. Remove or modify at will. **/
-    private static final long serialVersionUID = 1L;
+	/** Default value included to remove warning. Remove or modify at will. **/
+	private static final long serialVersionUID = 1L;
 
-    @NotNull
-    @Size(min = 1, max = 25, message = "1-25 letters and spaces")
-    @Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
-    @Column(name = "full_name")
-    private String name;
+	@NotNull
+	@Size(min = 1, max = 25, message = "1-25 letters and spaces")
+	@Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
+	@Column(name = "full_name")
+	private String name;
 
-    @NotNull
-    @Size(min = 10, max = 12, message = "10-12 Numbers")
-    @Digits(fraction = 0, integer = 12, message = "Not valid")
-    @Column(name = "phone_number")
-    private String phoneNumber;
+	@NotNull
+	@Size(min = 10, max = 12, message = "10-12 Numbers")
+	@Digits(fraction = 0, integer = 12, message = "Not valid")
+	@Column(name = "phone_number")
+	private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE,
-	    CascadeType.PERSIST })
-    @JoinColumn(name = "company_id")
-    private Company company;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JoinColumn(name = "company_id")
+	private Company company;
 
-    public String getName() {
-	return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getPhoneNumber() {
-	return phoneNumber;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-	this.phoneNumber = phoneNumber;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public Company getCompany() {
-	return company;
-    }
+	public Company getCompany() {
+		return company;
+	}
 
-    public void setCompany(Company company) {
-	this.company = company;
-    }
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 }

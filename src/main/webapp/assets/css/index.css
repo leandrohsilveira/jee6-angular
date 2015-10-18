@@ -8,6 +8,9 @@ body {
   padding-top: 50px;
 }
 
+.text-white {
+	color: #fff;	
+}
 
 /*
  * Global add-ons

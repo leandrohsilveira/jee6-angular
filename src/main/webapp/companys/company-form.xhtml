@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/templates/body.xhtml">
+
+	<ui:param name="icon" value="building" />
 	<ui:param name="pageHeader" value="Companys Form" />
 
 	<ui:define name="conteudo">
@@ -18,8 +20,8 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<h:commandButton styleClass="btn btn-primary" action="#{companyFormController.save()}" value="Save" />
-						<h:link styleClass="btn btn-default" outcome="${urlCompanysList}">Cancel</h:link>
+						<h:commandLink styleClass="btn btn-primary" action="#{companyFormController.save()}"><i class="fa fa-floppy-o"></i> Save</h:commandLink>
+						<h:link styleClass="btn btn-default" outcome="${urlCompanysList}"><i class="fa fa-ban"></i> Cancel</h:link>
 					</div>
 				</div>
 			</h:form>

@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html lang="en" 
+		xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:jsf="http://xmlns.jcp.org/jsf"
+		xmlns:f="http://xmlns.jcp.org/jsf/core" 
+		xmlns:h="http://xmlns.jcp.org/jsf/html" 
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		xmlns:a="http://java.sun.com/jsf/lhs">
 <h:head>
 	<meta charset="utf-8" />
 
@@ -13,42 +19,20 @@
 	<title>Angular, Bootstrap and JEE6 Example</title>
 	<!-- Bootstrap core CSS -->
 	<link href="#{libsPath}/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="#{libsPath}/css/font-awesome.min.css" rel="stylesheet" />
 	<!-- Custom styles for this template -->
 	<link href="#{assetsPath}/css/index.css" rel="stylesheet" />
 </h:head>
 <h:body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Company Manager</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="#{contextName}/index.html">Home</a>
-					</li>
-					<li>
-						<h:link outcome="#{urlMembersList}">Members</h:link>
-					</li>
-					<li>
-						<h:link outcome="#{urlCompanysList}">Companys</h:link>
-					</li>
-				</ul>
-				<form class="navbar-form navbar-right" method="get" action="#{contextName}#{urlSearchResults}.jsf">
-					<input type="text" name="search" class="form-control" placeholder="Search anything..." />
-				</form>
-			</div>
-		</div>
-	</nav>
+	<a:menu-aplicacao id="navbar" applicationName="Company Manager 2" urlSearchAnything="/search/results.jsf">
+		<a:item-menu-app outcome="/index.html" value="Home" />
+		<a:item-menu-app outcome="/members/members-list.jsf" value="Members" />
+		<a:item-menu-app outcome="/companys/companys-list.jsf" value="Companys" />
+	</a:menu-aplicacao>
+
 	<div class="container-fluid">
 		<div class="col-xs-12 main">
-			<h1 class="page-header">#{pageHeader}</h1>
+			<h1 class="page-header"><i class="fa fa-#{icon}"></i> #{pageHeader}</h1>
 			<ui:insert name="conteudo" />
 		</div>
 	</div>

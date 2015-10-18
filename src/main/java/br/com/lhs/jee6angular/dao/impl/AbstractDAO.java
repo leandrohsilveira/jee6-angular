@@ -8,10 +8,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.com.lhs.jee6angular.dao.DAO;
+import br.com.lhs.jee6angular.dao.util.query.QueryExpression;
 import br.com.lhs.jee6angular.model.Member;
 import br.com.lhs.jee6angular.model.Model;
 
@@ -79,12 +79,13 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 	}
 
 	@Override
-	public List<T> find(String search, Integer firstResult, Integer maxResults) {
+	public List<T> find(QueryExpression queryExpression, Integer firstResult, Integer maxResults) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
 		Root<T> root = cq.from(getEntityClass());
-		Predicate predicate = cb.like(root.get("query"), "%" + search + "%");
-		cq.select(root).where(predicate);
+		cq.select(root);
+		if (queryExpression != null)
+			cq.where(queryExpression.toPredicate(cb, root));
 		TypedQuery<T> query = entityManager.createQuery(cq);
 		if (firstResult != null)
 			query.setFirstResult(firstResult);
@@ -94,14 +95,13 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 	}
 
 	@Override
-	public Long count(String search) {
+	public Long count(QueryExpression queryExpression) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Member> root = cq.from(Member.class);
-		Predicate predicate = cb.or(
-				cb.like(root.get("name"), "%" + search + "%"),
-				cb.like(root.get("phoneNumber"), "%" + search + "%"));
-		cq.select(cb.count(root)).where(predicate);
+		cq.select(cb.count(root));
+		if (queryExpression != null)
+			cq.where(queryExpression.toPredicate(cb, root));
 		TypedQuery<Long> query = entityManager.createQuery(cq);
 		return query.getSingleResult();
 	}

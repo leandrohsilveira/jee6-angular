@@ -1,42 +1,42 @@
 package br.com.lhs.jee6angular.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.lhs.jee6angular.model.Model;
-import br.com.lhs.jee6angular.service.CompanyService;
-import br.com.lhs.jee6angular.service.MemberService;
+import br.com.lhs.jee6angular.dao.SearchDAO;
+import br.com.lhs.jee6angular.dao.util.query.impl.LikeQueryParam;
+import br.com.lhs.jee6angular.dao.util.query.impl.LikeQueryParam.LikeType;
+import br.com.lhs.jee6angular.model.Searchable;
 import br.com.lhs.jee6angular.service.SearchService;
 
 @Stateless
 public class DefaultSearchService implements SearchService {
 
-    private static final long serialVersionUID = -6569217399796192790L;
+	private static final long serialVersionUID = -6569217399796192790L;
 
-    @Inject
-    private MemberService memberService;
+	@Inject
+	private SearchDAO searchDAO;
 
-    @Inject
-    private CompanyService companyService;
+	@Override
+	public List<Searchable> search(String search, Integer firstResult, Integer maxResults) {
+		return searchDAO.find(new LikeQueryParam("query", search, LikeType.CONTEM), firstResult, maxResults);
+	}
 
-    @Override
-    public List<Model> search(String search) {
-	List<Model> models = new ArrayList<>();
-	memberService.find(search, null, null).forEach(
-		member -> models.add(member));
-	companyService.find(search, null, null).forEach(
-		company -> models.add(company));
-	return models;
-    }
+	@Override
+	public List<Searchable> all() {
+		return searchDAO.find(null, null, null);
+	}
 
-    public List<Model> all() {
-	List<Model> models = new ArrayList<>();
-	memberService.findAll().forEach(member -> models.add(member));
-	companyService.findAll().forEach(company -> models.add(company));
-	return models;
-    }
+	@Override
+	public Long count(String search) {
+		return searchDAO.count(new LikeQueryParam("query", search, LikeType.CONTEM));
+	}
+
+	@Override
+	public Long count() {
+		return searchDAO.count(null);
+	}
 
 }

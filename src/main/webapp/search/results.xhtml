@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <ui:composition template="/templates/body.xhtml">
-	<ui:param name="pageHeader" value="Search Results" />
+	<ui:param name="icon" value="search" />
+	<ui:param name="pageHeader" value="Search Results for '#{searchListController.search}'" />
 
 	<ui:define name="conteudo">
 		<f:view>
 			<div class="table-responsive">
 				<f:metadata>
-					<f:viewParam name="search" value="#{searchController.search}" />
+					<f:viewParam name="page" value="#{searchListController.page}" />
+					<f:viewParam name="search" value="#{searchListController.search}" />
 				</f:metadata>
-				<h:dataTable styleClass="table table-striped" value="#{searchController.results}" var="result">
+				<h:dataTable styleClass="table table-striped" value="#{searchListController.results}" var="result">
 					<h:column>
 						<f:facet name="header">Result</f:facet>
-						<ui:fragment rendered="#{modelsController.isInstanceOfMember(result)}">
-							<span class="glyphicon glyphicon-user" /> Member
-							<div>
-								<strong>Name: #{modelsController.getAsMember(result).name}</strong>
-								<br />
-								Phone Number: #{modelsController.getAsMember(result).phoneNumber}
-							</div>
-						</ui:fragment>
-						<ui:fragment rendered="#{modelsController.isInstanceOfCompany(result)}">
-							<span class="glyphicon glyphicon-calendar" /> Company
-							<div>
-								<strong>Name: #{modelsController.getAsCompany(result).name}</strong>
-							</div>
-						</ui:fragment>
+						<i class="fa fa-user" jsf:rendered="#{modelsController.isInstanceOfMember(result)}"></i>
+						<i class="fa fa-building" jsf:rendered="#{modelsController.isInstanceOfCompany(result)}"></i>
+						<span> #{result.class.simpleName}:</span>
+						<br />
+						<strong>Name: #{result.name}</strong>
 					</h:column>
 					<h:column headerClass="col-xs-1">
 						<ui:fragment rendered="#{modelsController.isInstanceOfMember(result)}">
@@ -40,10 +33,37 @@
 							</h:link>
 						</ui:fragment>
 					</h:column>
-
-
 				</h:dataTable>
 			</div>
+			<ul class="pagination pagination-sm">
+				<li class="#{searchListController.page == 1 ? 'disabled' : ''}">
+					<h:link outcome="#{urlSearchResults}?page=1&amp;search=#{searchListController.search}" disabled="#{searchListController.page == 1}">
+						<span class="fa fa-fast-backward" />
+					</h:link>
+				</li>
+				<li class="#{searchListController.page == 1 ? 'disabled' : ''}">
+					<h:link outcome="#{urlSearchResults}?page=#{searchListController.page - 1}&amp;search=#{searchListController.search}" disabled="#{searchListController.page == 1}">
+						<span class="fa fa-backward" />
+					</h:link>
+				</li>
+				<c:forEach begin="1" end="#{searchListController.pages}" step="1" varStatus="status">
+					<ui:fragment rendered="#{searchListController.page + 3 ge status.index and searchListController.page - 3 le status.index}">
+						<li class="#{status.index == searchListController.page ? 'active' : ''}">
+							<h:link outcome="#{urlSearchResults}?page=#{status.index}&amp;search=#{searchListController.search}" value="#{status.index}" />
+						</li>
+					</ui:fragment>
+				</c:forEach>
+				<li class="#{searchListController.page == searchListController.pages ? 'disabled' : ''}">
+					<h:link outcome="#{urlSearchResults}?page=#{searchListController.page + 1}&amp;search=#{searchListController.search}" disabled="#{searchListController.page == searchListController.pages}">
+						<span class="fa fa-forward" />
+					</h:link>
+				</li>
+				<li class="#{searchListController.page == searchListController.pages ? 'disabled' : ''}">
+					<h:link outcome="#{urlSearchResults}?page=#{searchListController.pages}&amp;search=#{searchListController.search}" disabled="#{searchListController.page == searchListController.pages}">
+						<span class="fa fa-fast-forward" />
+					</h:link>
+				</li>
+			</ul>
 		</f:view>
 	</ui:define>
 
