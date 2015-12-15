@@ -18,12 +18,12 @@
 		<org.wildfly.bom.version>8.2.0.Final</org.wildfly.bom.version>
 		<web.context.name>jee</web.context.name>
 	</properties>
-	
+
 	<profiles>
 		<profile>
 			<id>local-mem</id>
 			<properties>
-				
+
 			</properties>
 		</profile>
 	</profiles>
@@ -170,6 +170,11 @@
 		<dependency>
 			<groupId>org.jboss.spec.javax.el</groupId>
 			<artifactId>jboss-el-api_3.0_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<!-- <scope>provided</scope> -->
 		</dependency>
 	</dependencies>
 	<build>

@@ -16,7 +16,7 @@ public class ApplicationURLs implements Serializable {
 	@Produces
 	@Named
 	public String getContextName() {
-		return "/jee6-angular";
+		return "/jee7-sample";
 	}
 
 	@Produces

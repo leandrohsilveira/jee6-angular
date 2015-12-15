@@ -12,6 +12,9 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import br.com.lhs.jee6angular.commons.Constants;
 
 @Entity
@@ -19,6 +22,7 @@ import br.com.lhs.jee6angular.commons.Constants;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "entity_name")
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "search_map_seq", initialValue = 1, allocationSize = 1)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Searchable extends Model {
 
 	private static final long serialVersionUID = 1L;
@@ -35,10 +39,11 @@ public class Searchable extends Model {
 			Class<?> clazz = field.getType();
 			if (clazz.isPrimitive()
 					&& (int.class.isAssignableFrom(clazz) || long.class.isAssignableFrom(clazz) || float.class.isAssignableFrom(clazz) || double.class
-							.isAssignableFrom(clazz)))
+							.isAssignableFrom(clazz))) {
 				clazz = Number.class;
+			}
 			if (!field.getName().equalsIgnoreCase("serialVersionUID") && !field.getName().equalsIgnoreCase("query")
-					&& (clazz == String.class || Number.class.isAssignableFrom(clazz)))
+					&& ((clazz == String.class) || Number.class.isAssignableFrom(clazz))) {
 				try {
 					field.setAccessible(true);
 					sb.append(field.get(this)).append(",");
@@ -46,6 +51,7 @@ public class Searchable extends Model {
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
+			}
 		}
 		query = sb.toString().toUpperCase();
 	}

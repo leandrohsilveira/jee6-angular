@@ -1,4 +1,4 @@
-function($) {
+(function($) {
 	
 	// ready
 	$(function() {
@@ -9,4 +9,4 @@ function($) {
 		
 	});
 	
-}(jQuery);
+}(jQuery));

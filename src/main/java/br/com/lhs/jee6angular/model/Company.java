@@ -13,11 +13,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import br.com.lhs.jee6angular.commons.Constants;
 
 @Entity
 @Table(name = "company")
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "company_seq", initialValue = 1, allocationSize = 1)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Company extends Searchable {
 
 	private static final long serialVersionUID = -5372689998340170972L;
@@ -29,6 +33,7 @@ public class Company extends Searchable {
 	private String name;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<Member> members;
 
 	public String getName() {

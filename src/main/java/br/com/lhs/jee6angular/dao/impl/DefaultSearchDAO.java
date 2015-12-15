@@ -28,13 +28,17 @@ public class DefaultSearchDAO implements SearchDAO {
 		CriteriaQuery<Searchable> cq = cb.createQuery(Searchable.class);
 		Root<Searchable> root = cq.from(Searchable.class);
 		cq.select(root);
-		if (queryExpression != null)
+		if (queryExpression != null) {
 			cq.where(queryExpression.toPredicate(cb, root));
+		}
 		TypedQuery<Searchable> query = entityManager.createQuery(cq);
-		if (firstResult != null)
+		if (firstResult != null) {
 			query.setFirstResult(firstResult);
-		if (maxResults != null)
+		}
+		if (maxResults != null) {
 			query.setMaxResults(maxResults);
+		}
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
 		return query.getResultList();
 	}
 
@@ -45,10 +49,12 @@ public class DefaultSearchDAO implements SearchDAO {
 
 		Root<Searchable> root = cq.from(Searchable.class);
 		cq.select(cb.count(root));
-		if (queryExpression != null)
+		if (queryExpression != null) {
 			cq.where(queryExpression.toPredicate(cb, root));
+		}
 
 		TypedQuery<Long> query = entityManager.createQuery(cq);
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
 		return query.getSingleResult();
 	}
 

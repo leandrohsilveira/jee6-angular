@@ -52,7 +52,9 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 		CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
 		Root<T> root = cq.from(getEntityClass());
 		cq.select(root);
-		return entityManager.createQuery(cq).getResultList();
+		TypedQuery<T> query = entityManager.createQuery(cq);
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
+		return query.getResultList();
 	}
 
 	@Override
@@ -62,10 +64,13 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 		Root<T> root = cq.from(getEntityClass());
 		cq.select(root);
 		TypedQuery<T> query = entityManager.createQuery(cq);
-		if (firstResult != null)
+		if (firstResult != null) {
 			query.setFirstResult(firstResult);
-		if (maxResults != null)
+		}
+		if (maxResults != null) {
 			query.setMaxResults(maxResults);
+		}
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
 		return query.getResultList();
 	}
 
@@ -75,7 +80,9 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<T> root = cq.from(getEntityClass());
 		cq.select(cb.count(root));
-		return entityManager.createQuery(cq).getSingleResult();
+		TypedQuery<Long> query = entityManager.createQuery(cq);
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
+		return query.getSingleResult();
 	}
 
 	@Override
@@ -84,13 +91,17 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 		CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
 		Root<T> root = cq.from(getEntityClass());
 		cq.select(root);
-		if (queryExpression != null)
+		if (queryExpression != null) {
 			cq.where(queryExpression.toPredicate(cb, root));
+		}
 		TypedQuery<T> query = entityManager.createQuery(cq);
-		if (firstResult != null)
+		if (firstResult != null) {
 			query.setFirstResult(firstResult);
-		if (maxResults != null)
+		}
+		if (maxResults != null) {
 			query.setMaxResults(maxResults);
+		}
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
 		return query.getResultList();
 	}
 
@@ -100,9 +111,11 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Member> root = cq.from(Member.class);
 		cq.select(cb.count(root));
-		if (queryExpression != null)
+		if (queryExpression != null) {
 			cq.where(queryExpression.toPredicate(cb, root));
+		}
 		TypedQuery<Long> query = entityManager.createQuery(cq);
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
 		return query.getSingleResult();
 	}
 

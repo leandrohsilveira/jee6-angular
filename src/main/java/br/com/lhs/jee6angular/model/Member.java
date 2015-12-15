@@ -29,11 +29,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import br.com.lhs.jee6angular.commons.Constants;
 
 @Entity
 @Table(name = "member")
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "member_seq", initialValue = 1, allocationSize = 1)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Member extends Searchable {
 
 	/** Default value included to remove warning. Remove or modify at will. **/
@@ -53,6 +57,7 @@ public class Member extends Searchable {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinColumn(name = "company_id")
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Company company;
 
 	public String getName() {
