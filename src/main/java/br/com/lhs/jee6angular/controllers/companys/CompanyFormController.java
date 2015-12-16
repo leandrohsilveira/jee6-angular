@@ -2,6 +2,7 @@ package br.com.lhs.jee6angular.controllers.companys;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -48,15 +49,33 @@ public class CompanyFormController implements Serializable {
 
 	public String save() {
 		// company.setMembers(getCompanyMembersController().getMembers());
-		for (Member member : company.getMembers())
-			member.setCompany(company);
-		companyService.save(company);
+		if (company.getId() != null) {
+			List<Member> actualMembers = memberService.findByCompany(company);
+
+			actualMembers.stream().forEach(member -> {
+				if (!company.getMembers().contains(member)) {
+					member.setCompany(null);
+					memberService.save(member);
+				}
+			});
+			company.getMembers().stream().forEach(member -> member.setCompany(company));
+			companyService.save(company);
+		} else {
+			List<Member> members = company.getMembers();
+			company.setMembers(null);
+			companyService.save(company);
+			members.stream().forEach(member -> member.setCompany(company));
+			company.setMembers(members);
+			companyService.save(company);
+		}
+
 		return urls.getUrlCompanysList().concat("?faces-redirect=true");
 	}
 
 	public Company getCompany() {
-		if (company == null)
+		if (company == null) {
 			newCompany();
+		}
 		return company;
 	}
 
