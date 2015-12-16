@@ -29,9 +29,6 @@ public class CompanyFormController implements Serializable {
 	@Inject
 	private ApplicationURLs urls;
 
-	// @Inject
-	// private CompanyMembersController companyMembersController;
-
 	private Company company;
 
 	private Long id;
@@ -48,7 +45,6 @@ public class CompanyFormController implements Serializable {
 	}
 
 	public String save() {
-		// company.setMembers(getCompanyMembersController().getMembers());
 		if (company.getId() != null) {
 			List<Member> actualMembers = memberService.findByCompany(company);
 
@@ -90,9 +86,5 @@ public class CompanyFormController implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	// public CompanyMembersController getCompanyMembersController() {
-	// return companyMembersController;
-	// }
 
 }
