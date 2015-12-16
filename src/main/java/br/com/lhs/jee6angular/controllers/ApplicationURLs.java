@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 @Singleton
@@ -16,7 +17,7 @@ public class ApplicationURLs implements Serializable {
 	@Produces
 	@Named
 	public String getContextName() {
-		return "/jee7-sample";
+		return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 	}
 
 	@Produces

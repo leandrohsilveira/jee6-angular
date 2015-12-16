@@ -35,6 +35,8 @@ public class ApplicationFilter implements Filter {
 		logger.info("Adicionando context params para o FacesServlet.");
 		config.getServletContext().setInitParameter("javax.faces.FACELETS_LIBRARIES", "/WEB-INF/lhs.taglib.xml");
 		config.getServletContext().setInitParameter("javax.faces.PROJECT_STAGE", "development");
+		config.getServletContext().setInitParameter("primefaces.THEME", "bootstrap");
+		config.getServletContext().setInitParameter("primefaces.FONT_AWESOME", "true");
 	}
 
 }

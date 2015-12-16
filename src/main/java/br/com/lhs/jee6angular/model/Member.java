@@ -55,7 +55,7 @@ public class Member extends Searchable {
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinColumn(name = "company_id")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Company company;

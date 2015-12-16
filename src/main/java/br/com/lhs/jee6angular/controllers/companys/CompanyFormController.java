@@ -1,6 +1,7 @@
 package br.com.lhs.jee6angular.controllers.companys;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -8,51 +9,71 @@ import javax.inject.Named;
 
 import br.com.lhs.jee6angular.controllers.ApplicationURLs;
 import br.com.lhs.jee6angular.model.Company;
+import br.com.lhs.jee6angular.model.Member;
 import br.com.lhs.jee6angular.service.CompanyService;
+import br.com.lhs.jee6angular.service.MemberService;
 
 @Named
 @RequestScoped
 public class CompanyFormController implements Serializable {
 
-    private static final long serialVersionUID = 3344613678445493200L;
+	private static final long serialVersionUID = 3344613678445493200L;
 
-    @Inject
-    private CompanyService companyService;
+	@Inject
+	private CompanyService companyService;
 
-    @Inject
-    private ApplicationURLs urls;
+	@Inject
+	private MemberService memberService;
 
-    private Company company;
+	@Inject
+	private ApplicationURLs urls;
 
-    private Long id;
+	// @Inject
+	// private CompanyMembersController companyMembersController;
 
-    private void newCompany() {
-	company = new Company();
-	if (id != null)
-	    company = companyService.findById(id);
-    }
+	private Company company;
 
-    public String save() {
-	companyService.save(company);
-	return urls.getUrlCompanysList().concat("?faces-redirect=true");
-    }
+	private Long id;
 
-    public Company getCompany() {
-	if (company == null)
-	    newCompany();
-	return company;
-    }
+	private void newCompany() {
+		if (id != null) {
+			company = companyService.findById(id);
+			company.setMembers(memberService.findByCompany(company));
+		} else {
+			company = new Company();
+			company.setMembers(new ArrayList<>());
+		}
 
-    public void setCompany(Company company) {
-	this.company = company;
-    }
+	}
 
-    public Long getId() {
-	return id;
-    }
+	public String save() {
+		// company.setMembers(getCompanyMembersController().getMembers());
+		for (Member member : company.getMembers())
+			member.setCompany(company);
+		companyService.save(company);
+		return urls.getUrlCompanysList().concat("?faces-redirect=true");
+	}
 
-    public void setId(Long id) {
-	this.id = id;
-    }
+	public Company getCompany() {
+		if (company == null)
+			newCompany();
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	// public CompanyMembersController getCompanyMembersController() {
+	// return companyMembersController;
+	// }
 
 }

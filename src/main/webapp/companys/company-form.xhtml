@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<html lang="en" 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
+	xmlns:h="http://xmlns.jcp.org/jsf/html" 
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <ui:composition template="/templates/body.xhtml">
 
 	<ui:param name="icon" value="building" />
@@ -10,19 +17,31 @@
 			<f:metadata>
 				<f:viewParam name="id" value="#{companyFormController.id}" />
 			</f:metadata>
-			<h:form id="companyForm" styleClass="form-horizontal" prependId="false">
+			<h:form id="companyForm" prependId="false">
 				<h:inputHidden value="#{companyFormController.company.id}" />
-				<div class="form-group">
-					<label for="name" class="col-sm-2 control-label">Name</label>
-					<div class="col-sm-10">
+				<div class="ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid">
+						<label for="name" class="control-label">Name</label>
 						<h:inputText id="name" styleClass="form-control" value="#{companyFormController.company.name}" />
-					</div>
+					
+						<label for="name" class="control-label">Members</label>
+						<p:autoComplete cache="true"
+											minQueryLength="3" 
+											maxResults="10"
+											styleClass="ui-grid-col-12"
+											completeMethod="#{memberProvider.autocompleteMember}"
+											value="#{companyFormController.company.members}" 
+											multiple="true"
+											var="selectedMember" 
+											itemLabel="#{selectedMember.name}"
+											itemValue="#{selectedMember}"
+											converter="#{memberConverter}" />
+					</p:panelGrid>
 				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<h:commandLink styleClass="btn btn-primary" action="#{companyFormController.save()}"><i class="fa fa-floppy-o"></i> Save</h:commandLink>
-						<h:link styleClass="btn btn-default" outcome="${urlCompanysList}"><i class="fa fa-ban"></i> Cancel</h:link>
-					</div>
+				
+				<div>
+					<h:commandLink styleClass="btn btn-primary" action="#{companyFormController.save()}"><i class="fa fa-floppy-o"></i> Save</h:commandLink>
+					<h:link styleClass="btn btn-default" outcome="${urlCompanysList}"><i class="fa fa-ban"></i> Cancel</h:link>
 				</div>
 			</h:form>
 		</f:view>

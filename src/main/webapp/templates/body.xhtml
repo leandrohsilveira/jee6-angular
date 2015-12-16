@@ -22,6 +22,7 @@
 	<link href="#{libsPath}/css/font-awesome.min.css" rel="stylesheet" />
 	<!-- Custom styles for this template -->
 	<link href="#{assetsPath}/css/index.css" rel="stylesheet" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
 </h:head>
 <h:body>
 	<a:menu-aplicacao id="navbar" applicationName="Company Manager 2" urlSearchAnything="/search/results.jsf">
@@ -37,7 +38,6 @@
 		</div>
 	</div>
 
-	<script src="#{libsPath}/js/jquery.min.js"></script>
 	<script src="#{libsPath}/js/bootstrap.min.js"></script>
 	<ui:insert name="javascript" />
 </h:body>

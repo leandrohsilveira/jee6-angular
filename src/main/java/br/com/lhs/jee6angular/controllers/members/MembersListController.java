@@ -36,8 +36,7 @@ public class MembersListController implements Serializable {
 		if (firstResult <= 0)
 			firstResult = 0;
 		if (search != null && !search.trim().equals(""))
-			members = memberService.find(search.toUpperCase(), firstResult,
-					maxResults);
+			members = memberService.find(search.toUpperCase(), firstResult, maxResults);
 		else
 			members = memberService.find(firstResult, maxResults);
 	}

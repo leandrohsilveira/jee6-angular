@@ -8,6 +8,10 @@ body {
   padding-top: 50px;
 }
 
+.ui-fluid .ui-grid-col-12 .ui-autocomplete-multiple-container {
+	width: 100%;
+}
+
 .text-white {
 	color: #fff;	
 }

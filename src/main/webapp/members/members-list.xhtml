@@ -32,6 +32,10 @@
 						<f:facet name="header">Phone Number</f:facet>
 						<h:outputText class="text-phoneNumber" value="#{member.phoneNumber}" />
 					</h:column>
+					<h:column>
+						<f:facet name="header">Company</f:facet>
+						<h:outputText rendered="#{member.company != null}" class="text-companyName" value="#{member.company.name}" />
+					</h:column>
 					<h:column headerClass="col-xs-1">
 						<a class="btn btn-sm btn-default" jsf:outcome="#{urlMemberForm}?id=#{member.id}">
 							<span class="fa fa-pencil" />
