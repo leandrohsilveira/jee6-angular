@@ -26,19 +26,15 @@
 </h:head>
 <h:body>
 	<a:menu-aplicacao id="navbar" applicationName="Company Manager 2">
-		<a:item-menu-app outcome="/index.html" value="Home" />
-		<a:item-menu-app outcome="/members/members-list.jsf" value="Members" />
-		<a:item-menu-app outcome="/companys/companys-list.jsf" value="Companys" />
 	</a:menu-aplicacao>
 
 	<div class="container-fluid">
 		<div class="col-xs-12 main">
-			<h1 class="page-header"><i class="fa fa-#{icon}"></i> #{pageHeader}</h1>
-			<ui:insert name="conteudo" />
+			<h1 class="page-header"><i class="fa fa-sign-in"></i> Sign in</h1>
+			Login page!!
 		</div>
 	</div>
 
 	<script src="#{libsPath}/js/bootstrap.min.js"></script>
-	<ui:insert name="javascript" />
 </h:body>
 </html>

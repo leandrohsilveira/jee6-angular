@@ -22,7 +22,7 @@ import br.com.lhs.jee6angular.commons.Constants;
 @Table(name = "company")
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "company_seq", initialValue = 1, allocationSize = 1)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Company extends Searchable {
+public class Company extends Model {
 
 	private static final long serialVersionUID = -5372689998340170972L;
 

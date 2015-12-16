@@ -1,17 +1,19 @@
 package br.com.lhs.jee6angular.controllers.members;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.LazyDataModel;
+
 import br.com.lhs.jee6angular.model.Member;
 import br.com.lhs.jee6angular.service.MemberService;
+import br.com.lhs.jee6angular.utils.LazyDataModelWrapper;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class MembersListController implements Serializable {
 
 	private static final long serialVersionUID = 3344613678445493200L;
@@ -19,73 +21,27 @@ public class MembersListController implements Serializable {
 	@Inject
 	private MemberService memberService;
 
-	private List<Member> members;
+	private LazyDataModel<Member> membersData;
 
-	private Integer page = 1;
+	private String name;
 
-	private Integer maxResults = 5;
-
-	private Integer pages;
-
-	private String search;
-
-	private void findMembers() {
-		if (page > getPages())
-			page = getPages();
-		Integer firstResult = page * maxResults - maxResults;
-		if (firstResult <= 0)
-			firstResult = 0;
-		if (search != null && !search.trim().equals(""))
-			members = memberService.find(search.toUpperCase(), firstResult, maxResults);
-		else
-			members = memberService.find(firstResult, maxResults);
+	public LazyDataModel<Member> getMembersData() {
+		if (membersData == null) {
+			membersData = new LazyDataModelWrapper<Member>((first, pageSize, sortField, sortOrder, filters) -> memberService.findByName(getName(), first, pageSize), filters -> memberService.countByName(getName()).intValue());
+		}
+		return membersData;
 	}
 
-	private void countMembers() {
-		Long membersCount;
-		if (search != null && !search.trim().equals(""))
-			membersCount = memberService.count(search.toUpperCase());
-		else
-			membersCount = memberService.count();
-		pages = membersCount.intValue() / maxResults;
-		if (membersCount % maxResults > 0)
-			pages++;
+	public void setMembersData(LazyDataModel<Member> membersData) {
+		this.membersData = membersData;
 	}
 
-	public Integer getPages() {
-		if (pages == null)
-			countMembers();
-		return pages;
+	public String getName() {
+		return name;
 	}
 
-	public List<Member> getMembers() {
-		if (members == null)
-			findMembers();
-		return members;
-	}
-
-	public Integer getMaxResults() {
-		return maxResults;
-	}
-
-	public void setMaxResults(Integer maxResults) {
-		this.maxResults = maxResults;
-	}
-
-	public String getSearch() {
-		return search;
-	}
-
-	public void setSearch(String search) {
-		this.search = search;
-	}
-
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

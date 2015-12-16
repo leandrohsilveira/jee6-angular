@@ -1,77 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <ui:composition template="/templates/body.xhtml">
-	
+
 	<ui:param name="icon" value="user" />
 	<ui:param name="pageHeader" value="Members List" />
 
 	<ui:define name="conteudo">
 		<f:view>
-			<form id="searchMemberForm" class="form-inline form-search" method="get" action="#{contextName}#{urlMembersList}.jsf" >
-				<a class="btn btn-primary" jsf:outcome="#{urlMemberForm}"><i class="fa fa-plus"></i> <i class="fa fa-user"></i> New</a>
+			<form id="searchMemberForm" class="form-inline form-search" method="get" action="#{contextName}#{urlMembersList}.jsf">
+				<a class="btn btn-primary" jsf:outcome="#{urlMemberForm}">
+					<i class="fa fa-plus"></i>
+					<i class="fa fa-user"></i>
+					New
+				</a>
 				<div class="form-group">
 					<label for="searchMember">Search</label>
-					<input type="hidden" name="page" class="form-control" value="#{membersListController.page}" />
-					<input type="text" id="searchMember" name="search" class="form-control input-search" placeholder="Search Members..." value="#{membersListController.search}" />
+					<input type="text" id="searchMember" name="search" class="form-control input-search" placeholder="Search Members..." value="#{membersListController.name}" />
 				</div>
-				<button id="searchMemberBtn" type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>
-				<button id="searchMemberReset" type="button" class="btn btn-default btn-reset-search"><i class="fa fa-eraser"></i> Reset</button>
+				<button id="searchMemberBtn" type="submit" class="btn btn-default">
+					<i class="fa fa-search"></i>
+					Search
+				</button>
+				<button id="searchMemberReset" type="button" class="btn btn-default btn-reset-search">
+					<i class="fa fa-eraser"></i>
+					Reset
+				</button>
 			</form>
 			<br />
-			<div class="table-responsive">
+			<h:form>
 				<f:metadata>
-					<f:viewParam name="page" value="#{membersListController.page}" />
-					<f:viewParam name="search" value="#{membersListController.search}" />
+					<f:viewParam name="search" value="#{membersListController.name}" />
 				</f:metadata>
-				<h:dataTable styleClass="table table-striped" value="#{membersListController.members}" var="member">
-					<h:column>
+				<p:dataTable lazy="true" rowKey="#{member.id}" paginator="true" reflow="true" paginatorAlwaysVisible="true" rows="10" initMode="immediate" rowsPerPageTemplate="5,10,15"
+					value="#{membersListController.membersData}" var="member" filterEvent="submit">
+					
+					<p:column>
 						<f:facet name="header">Name</f:facet>
-							<i class="fa fa-user"></i> #{member.name}
-					</h:column>
-					<h:column>
+						<i class="fa fa-user"></i> #{member.name}
+					</p:column>
+					<p:column>
 						<f:facet name="header">Phone Number</f:facet>
 						<h:outputText class="text-phoneNumber" value="#{member.phoneNumber}" />
-					</h:column>
-					<h:column>
+					</p:column>
+					<p:column>
 						<f:facet name="header">Company</f:facet>
 						<h:outputText rendered="#{member.company != null}" class="text-companyName" value="#{member.company.name}" />
-					</h:column>
-					<h:column headerClass="col-xs-1">
+					</p:column>
+					<p:column headerClass="col-xs-1">
 						<a class="btn btn-sm btn-default" jsf:outcome="#{urlMemberForm}?id=#{member.id}">
 							<span class="fa fa-pencil" />
 						</a>
-					</h:column>
-				</h:dataTable>
-			</div>
-			<ul class="pagination pagination-sm">
-				<li class="#{membersListController.page == 1 ? 'disabled' : ''}">
-					<a jsf:outcome="#{urlMembersList}?page=1&amp;search=#{membersListController.search}" disabled="#{membersListController.page == 1}">
-						<span class="fa fa-fast-backward" />
-					</a>
-				</li>
-				<li class="#{membersListController.page == 1 ? 'disabled' : ''}">
-					<a jsf:outcome="#{urlMembersList}?page=#{membersListController.page - 1}&amp;search=#{membersListController.search}" disabled="#{membersListController.page == 1}">
-						<span class="fa fa-backward" />
-					</a>
-				</li>
-				<c:forEach begin="1" end="#{membersListController.pages}" step="1" varStatus="status">
-					<ui:fragment rendered="#{membersListController.page + 3 ge status.index and membersListController.page - 3 le status.index}">
-						<li class="#{status.index == membersListController.page ? 'active' : ''}">
-							<a jsf:outcome="#{urlMembersList}?page=#{status.index}&amp;search=#{membersListController.search}" value="#{status.index}" />
-						</li>
-					</ui:fragment>
-				</c:forEach>
-				<li class="#{membersListController.page == membersListController.pages ? 'disabled' : ''}">
-					<a jsf:outcome="#{urlMembersList}?page=#{membersListController.page + 1}&amp;search=#{membersListController.search}" disabled="#{membersListController.page == membersListController.pages}">
-						<span class="fa fa-forward" />
-					</a>
-				</li>
-				<li class="#{membersListController.page == membersListController.pages ? 'disabled' : ''}">
-					<a jsf:outcome="#{urlMembersList}?page=#{membersListController.pages}&amp;search=#{membersListController.search}" disabled="#{membersListController.page == membersListController.pages}">
-						<span class="fa fa-fast-forward" />
-					</a>
-				</li>
-			</ul>
+					</p:column>
+				</p:dataTable>
+			</h:form>
 		</f:view>
 	</ui:define>
 </ui:composition>

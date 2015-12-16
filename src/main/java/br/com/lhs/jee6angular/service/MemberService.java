@@ -11,4 +11,8 @@ public interface MemberService extends PersistenceService<Member> {
 
 	List<Member> completeByName(String name, Integer maxResults);
 
+	List<Member> findByName(String name, Integer first, Integer maxResults);
+
+	Long countByName(String name);
+
 }

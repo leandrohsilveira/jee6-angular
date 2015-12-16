@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.lhs.jee6angular.dao.DAO;
 import br.com.lhs.jee6angular.model.Model;
-import br.com.lhs.jee6angular.service.util.ResultContent;
 
 public interface PersistenceService<T extends Model> extends Serializable {
 
@@ -20,11 +19,5 @@ public interface PersistenceService<T extends Model> extends Serializable {
 	List<T> find(Integer firstResult, Integer maxResults);
 
 	Long count();
-
-	List<T> find(String search, Integer firstResult, Integer maxResults);
-
-	Long count(String search);
-
-	ResultContent<T> search(String search, Integer firstResult, Integer maxResults);
 
 }

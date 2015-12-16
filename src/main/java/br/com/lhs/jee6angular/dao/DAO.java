@@ -14,7 +14,9 @@ public interface DAO<T extends Model> extends Serializable {
 
 	List<T> findAll();
 
-	T findById(Long id);
+	T getById(Long id);
+
+	T get(QueryExpression queryExpression);
 
 	void remove(T model);
 

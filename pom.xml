@@ -191,6 +191,14 @@
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>bootstrap</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-impl</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>
@@ -214,7 +222,7 @@
 		</plugins>
 	</build>
 	<profiles>
-	
+
 		<profile>
 			<id>wildfly-redeploy</id>
 			<build>
@@ -237,7 +245,7 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>				
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

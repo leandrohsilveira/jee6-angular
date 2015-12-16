@@ -38,9 +38,27 @@ public abstract class AbstractDAO<T extends Model> implements DAO<T> {
 	}
 
 	@Override
-	public T findById(Long id) {
+	public T getById(Long id) {
 		try {
 			return entityManager.find(getEntityClass(), id);
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public T get(QueryExpression queryExpression) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
+		Root<T> root = cq.from(getEntityClass());
+		cq.select(root);
+		if (queryExpression != null) {
+			cq.where(queryExpression.toPredicate(cb, root));
+		}
+		TypedQuery<T> query = entityManager.createQuery(cq);
+		query.setHint("org.hibernate.cacheable", Boolean.TRUE);
+		try {
+			return query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}

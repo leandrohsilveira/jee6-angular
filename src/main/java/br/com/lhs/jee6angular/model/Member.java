@@ -38,7 +38,7 @@ import br.com.lhs.jee6angular.commons.Constants;
 @Table(name = "member")
 @SequenceGenerator(name = Constants.DEFAULT_SEQUENCE_GENERATOR, sequenceName = "member_seq", initialValue = 1, allocationSize = 1)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Member extends Searchable {
+public class Member extends Model {
 
 	/** Default value included to remove warning. Remove or modify at will. **/
 	private static final long serialVersionUID = 1L;

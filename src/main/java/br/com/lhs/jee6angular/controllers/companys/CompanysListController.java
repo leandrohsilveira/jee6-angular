@@ -30,37 +30,36 @@ public class CompanysListController implements Serializable {
 	private String search;
 
 	private void findCompanys() {
-		if (page > getPages())
+		if (page > getPages()) {
 			page = getPages();
-		Integer firstResult = page * maxResults - maxResults;
-		if (firstResult <= 0)
+		}
+		Integer firstResult = (page * maxResults) - maxResults;
+		if (firstResult <= 0) {
 			firstResult = 0;
-		if (search != null && !search.trim().equals(""))
-			companys = companyService.find(search.toUpperCase(), firstResult, maxResults);
-		else
-			companys = companyService.find(firstResult, maxResults);
+		}
+		companys = companyService.find(firstResult, maxResults);
 	}
 
 	private void countCompanys() {
 		Long membersCount;
-		if (search != null && !search.trim().equals(""))
-			membersCount = companyService.count(search.toUpperCase());
-		else
-			membersCount = companyService.count();
+		membersCount = companyService.count();
 		pages = membersCount.intValue() / maxResults;
-		if (membersCount % maxResults > 0)
+		if ((membersCount % maxResults) > 0) {
 			pages++;
+		}
 	}
 
 	public Integer getPages() {
-		if (pages == null)
+		if (pages == null) {
 			countCompanys();
+		}
 		return pages;
 	}
 
 	public List<Company> getCompanys() {
-		if (companys == null)
+		if (companys == null) {
 			findCompanys();
+		}
 		return companys;
 	}
 

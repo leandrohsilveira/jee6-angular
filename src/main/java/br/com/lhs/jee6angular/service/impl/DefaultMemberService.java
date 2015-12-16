@@ -5,6 +5,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
+
 import br.com.lhs.jee6angular.dao.DAO;
 import br.com.lhs.jee6angular.dao.MemberDAO;
 import br.com.lhs.jee6angular.dao.util.query.impl.EqualQueryParam;
@@ -35,7 +37,22 @@ public class DefaultMemberService extends AbstractPersistenceService<Member> imp
 
 	@Override
 	public List<Member> completeByName(String name, Integer maxResults) {
-		return memberDAO.find(new LikeQueryParam("name", name, LikeType.CONTEM), 0, maxResults != null ? maxResults : 10);
+		return findByName(name, 0, maxResults != null ? maxResults : 10);
 	}
 
+	@Override
+	public List<Member> findByName(String name, Integer first, Integer maxResults) {
+		if (StringUtils.isBlank(name)) {
+			name = "";
+		}
+		return memberDAO.find(new LikeQueryParam("name", name, LikeType.CONTEM), first, maxResults);
+	}
+
+	@Override
+	public Long countByName(String name) {
+		if (StringUtils.isBlank(name)) {
+			name = "";
+		}
+		return memberDAO.count(new LikeQueryParam("name", name, LikeType.CONTEM));
+	}
 }
