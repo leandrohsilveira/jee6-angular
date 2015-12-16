@@ -2,11 +2,11 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="jee6-angular-persistence-unit"
+	<persistence-unit name="jee7-sample-pu"
 		transaction-type="JTA">
 		<!-- <description>jee6-angular Persistence Unit</description> -->
 		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
-		<jta-data-source>java:jboss/datasources/jee6-angular-DS</jta-data-source>
+		<jta-data-source>java:jboss/datasources/jee7-sample-DS</jta-data-source>
 		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 
 		<properties>

@@ -17,16 +17,15 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<org.wildfly.bom.version>8.2.0.Final</org.wildfly.bom.version>
 		<web.context.name>jee</web.context.name>
+
+		<datasource.driver.postgres.groupid>org.postgresql</datasource.driver.postgres.groupid>
+		<datasource.driver.postgres.artifactid>postgresql</datasource.driver.postgres.artifactid>
+		<datasource.driver.postgres.version>9.4-1202-jdbc42</datasource.driver.postgres.version>
+		<datasource.driver.postgres.name>postgres.jar</datasource.driver.postgres.name>
+		<datasource.driver.postgres.class>org.postgresql.Driver</datasource.driver.postgres.class>
+		<datasource.config.jndiname>java:jboss/datasources/jee7-sample-DS</datasource.config.jndiname>
 	</properties>
 
-	<profiles>
-		<profile>
-			<id>local-mem</id>
-			<properties>
-
-			</properties>
-		</profile>
-	</profiles>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -63,9 +62,9 @@
 				<version>0.9.10</version>
 			</dependency>
 			<dependency>
-				<groupId>org.postgresql</groupId>
-				<artifactId>postgresql</artifactId>
-				<version>9.4-1202-jdbc42</version>
+				<groupId>${datasource.driver.postgres.groupid}</groupId>
+				<artifactId>${datasource.driver.postgres.artifactid}</artifactId>
+				<version>${datasource.driver.postgres.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.ocpsoft</groupId>
@@ -146,8 +145,8 @@
 			<artifactId>reflections</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
+			<groupId>${datasource.driver.postgres.groupid}</groupId>
+			<artifactId>${datasource.driver.postgres.artifactid}</artifactId>
 		</dependency>
 
 		<dependency>
@@ -194,6 +193,15 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.wildfly.plugins</groupId>
+					<artifactId>wildfly-maven-plugin</artifactId>
+					<version>1.0.0.Final</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
@@ -205,6 +213,98 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+	
+		<profile>
+			<id>wildfly-redeploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<configuration>
+							<hostname>0.0.0.0</hostname>
+							<username>admin</username>
+							<password>bry123</password>
+							<filename>${web.context.name}.${project.packaging}</filename>
+						</configuration>
+						<executions>
+							<execution>
+								<id>redeploy_application</id>
+								<phase>install</phase>
+								<goals>
+									<goal>redeploy-only</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>wildfly-deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<configuration>
+							<hostname>0.0.0.0</hostname>
+							<username>admin</username>
+							<password>bry123</password>
+							<filename>${web.context.name}.${project.packaging}</filename>
+						</configuration>
+						<executions>
+							<execution>
+								<id>deploy_jdbc_driver</id>
+								<phase>package</phase>
+								<goals>
+									<goal>deploy-artifact</goal>
+								</goals>
+								<configuration>
+									<groupId>${datasource.driver.postgres.groupid}</groupId>
+									<artifactId>${datasource.driver.postgres.artifactid}</artifactId>
+									<version>${datasource.driver.postgres.version}</version>
+									<name>${datasource.driver.postgres.name}</name>
+								</configuration>
+							</execution>
+							<execution>
+								<id>add_datasource</id>
+								<phase>package</phase>
+								<goals>
+									<goal>add-resource</goal>
+								</goals>
+
+								<configuration>
+									<address>subsystem=datasources,data-source=${datasource.config.jndiname}</address>
+									<resources>
+										<resource>
+											<properties>
+												<jndi-name>${datasource.config.jndiname}</jndi-name>
+												<enabled>true</enabled>
+												<connection-url>jdbc:postgresql://localhost:5432/jeeangulardb</connection-url>
+												<driver-class>${datasource.driver.postgres.class}</driver-class>
+												<driver-name>${datasource.driver.postgres.name}</driver-name>
+												<user-name>jeeangular</user-name>
+												<password>bry123</password>
+											</properties>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy_application</id>
+								<phase>install</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<repositories>
 		<repository>
 			<id>prime-repo</id>
